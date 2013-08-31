@@ -27,6 +27,7 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('resume', this.onResume, false);
     },
     // deviceready Event Handler
     //
@@ -45,33 +46,56 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
+    },
+    // we're getting a send event
+    onResume: function() {
+        /*window.plugins.webintent.hasExtra(window.plugins.webintent.EXTRA_TEXT,
+            function(has) {
+                app.openURL();
+            }, function() {
+                // nothing
+            }
+        */
+        app.openURL();
+    },
+    openURL: function() {
+        alert("this should be a URL - but right now we're just testing");
+        /*
+        var baseUrl = "http://advocate.io/bookmarklet";
+        var title = "";
+        var body = "";
+        
+        window.plugins.webintent.getExtra(window.plugins.webintent.EXTRA_TEXT, 
+            function(text) {
+                body = text;
+            }, function() {
+                // There was no extra supplied.
+            }
+        );
+        window.plugins.webintent.getExtra(window.plugins.webintent.EXTRA_SUBJECT, 
+            function(text) {
+                title = text;
+            }, function() {
+                // There was no extra supplied.
+            }
+        );
+        
+        var parts = body.split(" ");
+        
+        for (var i=0; i<parts.length; i++) {
+            if (parts[i].search(/htt/) == 0) {  FIXME re-add * to regex before uncommenting
+                // this is a URL
+                var url = parts[i];
+                var bookmarklet_url = baseUrl + '?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + '&mobile=1';
+            }
+        }
+        
+        if (bookmarklet_url) {
+            var ref = window.open(bookmarklet_url, '_blank', 'location=yes');
+        }
+        */
     }
 };
-
-
-function onDeviceReady() { 
-    
-    // What I'm trying to do here is process a SEND intent if there is one
-    // in this case that would typically be a Title / URL for a web page.
-    
-    window.plugins.webintent.getExtra(WebIntent.EXTRA_TEXT, function (text) {
-        
-        /*
-        #
-        # Here is where I will take the text, process it, and redirect
-        # the user to a new url. For now, let's just try opening a url
-        #
-        */
-        
-        var ref = window.open('http://apache.org', '_blank', 'location=yes');
-        
-    }, function() {
-        // There was no extra supplied.
-        
-    });
-    
-}
-
 
 
 
