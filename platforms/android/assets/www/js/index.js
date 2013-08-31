@@ -49,17 +49,17 @@ var app = {
     },
     // we're getting a send event
     onResume: function() {
-        /*window.plugins.webintent.hasExtra(window.plugins.webintent.EXTRA_TEXT,
+        window.webintent.hasExtra(window.webintent.EXTRA_TEXT,
             function(has) {
                 app.openURL();
             }, function() {
                 // nothing
             }
-        */
-        app.openURL();
+        );
     },
     openURL: function() {
-        alert("this should be a URL - but right now we're just testing");
+        // just for testing:
+        var ref = window.open("http://yahoo.com", '_blank', 'location=yes');
         /*
         var baseUrl = "http://advocate.io/bookmarklet";
         var title = "";

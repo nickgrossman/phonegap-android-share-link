@@ -1,4 +1,5 @@
 /Users/nick/dev/phonegap/hello2/platforms/android/bin/classes.dex : \
+/Users/nick/dev/phonegap/hello2/platforms/android/bin/classes/com/borismus/webintent/WebIntent.class \
 /Users/nick/dev/phonegap/hello2/platforms/android/bin/classes/com/nickgrossman/hello2/BuildConfig.class \
 /Users/nick/dev/phonegap/hello2/platforms/android/bin/classes/com/nickgrossman/hello2/HelloWorld.class \
 /Users/nick/dev/phonegap/hello2/platforms/android/bin/classes/com/nickgrossman/hello2/R$attr.class \
