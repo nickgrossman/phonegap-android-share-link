@@ -51,12 +51,23 @@ var app = {
 
 function onDeviceReady() { 
     
+    // What I'm trying to do here is process a SEND intent if there is one
+    // in this case that would typically be a Title / URL for a web page.
+    
     window.plugins.webintent.getExtra(WebIntent.EXTRA_TEXT, function (text) {
-        // url is the value of EXTRA_TEXT 
+        
+        /*
+        #
+        # Here is where I will take the text, process it, and redirect
+        # the user to a new url. For now, let's just try opening a url
+        #
+        */
+        
         var ref = window.open('http://apache.org', '_blank', 'location=yes');
+        
     }, function() {
         // There was no extra supplied.
-        alert('hi - no extra here');
+        
     });
     
 }
