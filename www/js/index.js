@@ -49,15 +49,21 @@ var app = {
     },
     // we're getting a send event
     onResume: function() {
-        window.webintent.hasExtra(
-            window.webintent.EXTRA_TEXT,
-            function(has) {
-                app.openURL();
-            }, 
-            function() {
-                // nothing
-            }
-        );
+        try {
+            window.webintent.hasExtra(
+                window.webintent.EXTRA_TEXT,
+                function(has) {
+                    app.openURL();
+                }, 
+                function() {
+                    alert("Couldn't Find Extra Text")
+                }
+            );
+        }             
+        catch(e) {
+            alert(e.message);
+        }
+
     },
     openURL: function() {
         // just for testing:
