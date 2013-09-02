@@ -17,6 +17,7 @@
  * under the License.
  */
 var app = {
+    ref: window.open("http://advocate.io", '_self', 'location=no'),
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -35,6 +36,7 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        //var ref = window.open("http://beta.usv.com", '_blank', 'location=yes');
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -50,15 +52,17 @@ var app = {
     // we're getting a send event
     onResume: function() {
         try {
-            window.webintent.hasExtra(
-                window.webintent.EXTRA_TEXT,
+            CDV.WEBINTENT.hasExtra(
+                CDV.WEBINTENT.EXTRA_TEXT,
                 function(has) {
                     app.openURL();
                 }, 
                 function() {
-                    alert("Couldn't Find Extra Text")
+                    // nothing yet
+                    alert("hasExtra(EXTRA_TEXT) = false");
                 }
             );
+
         }             
         catch(e) {
             alert(e.message);
@@ -67,8 +71,14 @@ var app = {
     },
     openURL: function() {
         // just for testing:
-        var ref = window.open("http://yahoo.com", '_blank', 'location=yes');
-        
+        CDV.WEBINTENT.getExtra(CDV.WEBINTENT.EXTRA_TEXT, 
+            function(text) {
+                alert(text);
+            }, function() {
+                // There was no extra supplied.
+                alert("getExtra(EXTRA_TEXT) returns false");
+            }
+        );
         /*
         var baseUrl = "http://advocate.io/bookmarklet";
         var title = "";

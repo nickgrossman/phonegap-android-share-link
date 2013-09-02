@@ -1,4 +1,6 @@
 <feature name="InAppBrowser">
 	<param name="android-package" value="org.apache.cordova.InAppBrowser" />
 </feature>
-<plugin name="WebIntent" value="com.borismus.webintent.WebIntent" />
+<feature name="WebIntent"> 
+	<param name="android-package" value="com.borismus.webintent.WebIntent" /> 
+</feature>
