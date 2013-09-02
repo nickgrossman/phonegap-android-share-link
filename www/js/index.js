@@ -17,8 +17,10 @@
  * under the License.
  */
 var app = {
-    ref: window.open("http://advocate.io", '_self', 'location=no'),
     // Application Constructor
+    baseURL: "http://advocate.io/bookmarklet",
+    subject: "",
+    body: "",
     initialize: function() {
         this.bindEvents();
     },
@@ -28,6 +30,7 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('deviceready', this.onResume, false);
         document.addEventListener('resume', this.onResume, false);
     },
     // deviceready Event Handler
@@ -54,8 +57,30 @@ var app = {
         try {
             CDV.WEBINTENT.hasExtra(
                 CDV.WEBINTENT.EXTRA_TEXT,
-                function(has) {
-                    app.openURL();
+                function(has) {     
+                    // there is extra text                                  
+                    CDV.WEBINTENT.getExtra(CDV.WEBINTENT.EXTRA_TEXT, 
+                        function(result) {
+                            // we've got the extra text
+                            app.body = result;
+                            
+                            CDV.WEBINTENT.getExtra(CDV.WEBINTENT.EXTRA_SUBJECT, 
+                                function(result) {
+                                    // we've got the subject too!
+                                    
+                                    app.subject = result;
+                                    app.openForm();
+                                
+                                }, function() {
+                                    // There was no extra supplied.
+                                    alert("Error -- couldn't get the Subject to share.");
+                                }
+                            );
+                        }, function() {
+                            // There was no extra supplied.
+                            alert("Error -- couldn't get the Text to share.");
+                        }
+                    );
                 }, 
                 function() {
                     // nothing yet
@@ -69,50 +94,23 @@ var app = {
         }
 
     },
-    openURL: function() {
-        // just for testing:
-        CDV.WEBINTENT.getExtra(CDV.WEBINTENT.EXTRA_TEXT, 
-            function(text) {
-                alert(text);
-            }, function() {
-                // There was no extra supplied.
-                alert("getExtra(EXTRA_TEXT) returns false");
-            }
-        );
-        /*
-        var baseUrl = "http://advocate.io/bookmarklet";
-        var title = "";
-        var body = "";
-        
-        window.plugins.webintent.getExtra(window.plugins.webintent.EXTRA_TEXT, 
-            function(text) {
-                body = text;
-            }, function() {
-                // There was no extra supplied.
-            }
-        );
-        window.plugins.webintent.getExtra(window.plugins.webintent.EXTRA_SUBJECT, 
-            function(text) {
-                title = text;
-            }, function() {
-                // There was no extra supplied.
-            }
-        );
-        
-        var parts = body.split(" ");
+    openForm: function() {
+                
+        var parts = app.body.split(" ");
         
         for (var i=0; i<parts.length; i++) {
-            if (parts[i].search(/htt/) == 0) {  FIXME re-add * to regex before uncommenting
-                // this is a URL
+           if (parts[i].search(/htt*/) == 0) {
+              // this is a URL
                 var url = parts[i];
-                var bookmarklet_url = baseUrl + '?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + '&mobile=1';
+                var bookmarklet_url = app.baseURL + '?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(app.subject) + '&mobile=1';
             }
         }
         
         if (bookmarklet_url) {
-            var ref = window.open(bookmarklet_url, '_blank', 'location=yes');
-        }
-        */
+            var ref = window.open(bookmarklet_url, '_self', 'location=no');
+        } else {
+            alert("could not assemble bookmarklet URL");
+        }        
     }
 };
 
