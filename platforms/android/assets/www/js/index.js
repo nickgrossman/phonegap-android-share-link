@@ -18,9 +18,10 @@
  */
 var app = {
     // Application Constructor
-    baseURL: "http://advocate.io/bookmarklet",
+    baseURL: "http://beta.usv.com/posts/new",
     subject: "",
     body: "",
+    browser: null,
     initialize: function() {
         this.bindEvents();
     },
@@ -63,14 +64,14 @@ var app = {
                         function(result) {
                             // we've got the extra text
                             app.body = result;
-                            
+
                             CDV.WEBINTENT.getExtra(CDV.WEBINTENT.EXTRA_SUBJECT, 
                                 function(result) {
                                     // we've got the subject too!
-                                    
+
                                     app.subject = result;
                                     app.openForm();
-                                
+
                                 }, function() {
                                     // There was no extra supplied.
                                     alert("Error -- couldn't get the Subject to share.");
@@ -95,9 +96,9 @@ var app = {
 
     },
     openForm: function() {
-                
+
         var parts = app.body.split(" ");
-        
+
         for (var i=0; i<parts.length; i++) {
            if (parts[i].search(/htt*/) == 0) {
               // this is a URL
@@ -105,9 +106,16 @@ var app = {
                 var bookmarklet_url = app.baseURL + '?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(app.subject) + '&mobile=1';
             }
         }
-        
+
         if (bookmarklet_url) {
-            var ref = window.open(bookmarklet_url, '_self', 'location=no');
+            if (ref) {
+                ref.close();
+            }
+            //alert(app.subject);
+            //var ts = Math.round((new Date()).getTime() / 1000);
+            var ref = window.open(bookmarklet_url, '_system');
+            ref.close();
+            
         } else {
             alert("could not assemble bookmarklet URL");
         }        
